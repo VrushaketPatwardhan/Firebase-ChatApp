@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "12982647264",
+    "project_id": "fir-vrushaket",
+    "storage_bucket": "fir-vrushaket.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12982647264:android:8e6497b96a5e0f55725385",
+        "android_client_info": {
+          "package_name": "com.example.fp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12982647264-ahlnd9qq2t567k8nl50ej3a6m92tclam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBmnrUTfHDkotGEiYHqe0g8SIkvyoXqLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12982647264-ahlnd9qq2t567k8nl50ej3a6m92tclam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
