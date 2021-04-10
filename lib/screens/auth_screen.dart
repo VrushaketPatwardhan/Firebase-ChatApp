@@ -27,15 +27,6 @@ class _AuthScreenState extends State<AuthScreen> {
       if (!isLogin) {
         authResult = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        setState(() {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-              "User signed in successfully",
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.white,
-          ));
-        });
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -45,15 +36,6 @@ class _AuthScreenState extends State<AuthScreen> {
             .set({
           'username': username,
           'email': email,
-        });
-        setState(() {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-              "User Created Succesfully!",
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.black,
-          ));
         });
       }
     } on PlatformException catch (err) {
