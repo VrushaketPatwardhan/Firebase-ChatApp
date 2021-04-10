@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn);
+  AuthForm(this.submitFn, this.isLoading);
+
+  final bool isLoading;
 
   final void Function(
     String email,
@@ -15,7 +17,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formkey = GlobalKey<FormState>();
-  var _isLogin = true;
+  var _isLogin = false;
   var _userEmail = "";
   var _userName = "";
   var _userPassword = "";
@@ -32,6 +34,22 @@ class _AuthFormState extends State<AuthForm> {
         _userName,
         _isLogin,
       );
+      // if (!_isLogin)
+      //   Scaffold.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //       "User signed in successfully",
+      //       style: TextStyle(color: Colors.white),
+      //     ),
+      //     backgroundColor: Colors.black,
+      //   ));
+      // if (_isLogin)
+      //   Scaffold.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //       "User Created Succesfully!",
+      //       style: TextStyle(color: Colors.white),
+      //     ),
+      //     backgroundColor: Colors.black,
+      //   ));
       // print(_userEmail);
       // print(_userName);
       // print(_userPassword);
@@ -124,22 +142,25 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(
                     height: 12,
                   ),
-                  RaisedButton(
-                    elevation: 6,
-                    textColor: Colors.white,
-                    onPressed: _trySubmit,
-                    child: Text(_isLogin ? "Login" : "Signup"),
-                  ),
-                  FlatButton(
-                      textColor: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
-                      },
-                      child: Text(_isLogin
-                          ? "Create New Account"
-                          : "I already have an account"))
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    RaisedButton(
+                      elevation: 6,
+                      textColor: Colors.white,
+                      onPressed: _trySubmit,
+                      child: Text(!_isLogin ? "Login" : "Signup"),
+                    ),
+                  if (!widget.isLoading)
+                    FlatButton(
+                        textColor: Colors.red,
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
+                        child: Text(!_isLogin
+                            ? "Create New Account"
+                            : "I already have an account"))
                   // ElevatedButton(
                   //   style: ElevatedButton.styleFrom(
                   //     primary: Colors.pink, // background

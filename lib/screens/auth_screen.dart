@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/auth_form.dart';
 
@@ -11,6 +12,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
+  var isLoading = false;
   void _submitAuthForm(
     String email,
     String password,
@@ -19,12 +21,40 @@ class _AuthScreenState extends State<AuthScreen> {
   ) async {
     UserCredential authResult;
     try {
-      if (isLogin) {
+      setState(() {
+        isLoading = true;
+      });
+      if (!isLogin) {
         authResult = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+        setState(() {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "User signed in successfully",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.white,
+          ));
+        });
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(authResult.user.uid)
+            .set({
+          'username': username,
+          'email': email,
+        });
+        setState(() {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "User Created Succesfully!",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.black,
+          ));
+        });
       }
     } on PlatformException catch (err) {
       var message = "an error occured!, check your credentials";
@@ -35,8 +65,14 @@ class _AuthScreenState extends State<AuthScreen> {
         content: Text(message),
         backgroundColor: Colors.red,
       ));
+      setState(() {
+        isLoading = false;
+      });
     } catch (err) {
       print(err);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -46,6 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
       backgroundColor: Colors.redAccent,
       body: AuthForm(
         _submitAuthForm,
+        isLoading,
       ),
     );
   }
